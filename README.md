@@ -1,1 +1,1 @@
-# curriculum-learning-classification
+# Curriculum Learning for Image Classification
