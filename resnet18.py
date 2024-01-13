@@ -1,16 +1,12 @@
-"""
-Code taken from tutorial https://debuggercafe.com/training-resnet18-from-scratch-using-pytorch/
-"""
-
 import torch.nn as nn
-import torch
 
 from torch import Tensor
 from typing import Type
 
+
 class BasicBlock(nn.Module):
     def __init__(
-        self, 
+        self,
         in_channels: int,
         out_channels: int,
         stride: int = 1,
@@ -18,24 +14,24 @@ class BasicBlock(nn.Module):
         downsample: nn.Module = None
     ) -> None:
         super(BasicBlock, self).__init__()
-        # Multiplicative factor for the subsequent conv2d layer's output channels.
-        # It is 1 for ResNet18 and ResNet34.
+        # Multiplicative factor for the subsequent conv2d layer's output channels
+        # It is 1 for ResNet18 and ResNet34
         self.expansion = expansion
         self.downsample = downsample
         self.conv1 = nn.Conv2d(
-            in_channels, 
-            out_channels, 
-            kernel_size=3, 
-            stride=stride, 
+            in_channels,
+            out_channels,
+            kernel_size=3,
+            stride=stride,
             padding=1,
             bias=False
         )
         self.bn1 = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
         self.conv2 = nn.Conv2d(
-            out_channels, 
-            out_channels*self.expansion, 
-            kernel_size=3, 
+            out_channels,
+            out_channels*self.expansion,
+            kernel_size=3,
             padding=1,
             bias=False
         )
@@ -58,9 +54,10 @@ class BasicBlock(nn.Module):
         out = self.relu(out)
         return  out
 
+
 class ResNet(nn.Module):
     def __init__(
-        self, 
+        self,
         img_channels: int,
         num_layers: int,
         block: Type[BasicBlock],
@@ -68,19 +65,18 @@ class ResNet(nn.Module):
     ) -> None:
         super(ResNet, self).__init__()
         if num_layers == 18:
-            # The following `layers` list defines the number of `BasicBlock` 
-            # to use to build the network and how many basic blocks to stack
-            # together.
+            # The following `layers` list defines the number of `BasicBlock`
+            # to use to build the network and how many basic blocks to stack together
             layers = [2, 2, 2, 2]
             self.expansion = 1
-        
+
         self.in_channels = 64
         # All ResNets (18 to 152) contain a Conv2d => BN => ReLU for the first
-        # three layers. Here, kernel size is 7.
+        # three layers. Here, kernel size is 7
         self.conv1 = nn.Conv2d(
             in_channels=img_channels,
             out_channels=self.in_channels,
-            kernel_size=7, 
+            kernel_size=7,
             stride=2,
             padding=3,
             bias=False
@@ -98,7 +94,7 @@ class ResNet(nn.Module):
         self.fc = nn.Linear(512*self.expansion, num_classes)
 
     def _make_layer(
-        self, 
+        self,
         block: Type[BasicBlock],
         out_channels: int,
         blocks: int,
@@ -107,18 +103,18 @@ class ResNet(nn.Module):
         downsample = None
         if stride != 1:
             """
-            This should pass from `layer2` to `layer4` or 
+            This should pass from `layer2` to `layer4` or
             when building ResNets50 and above. Section 3.3 of the paper
             Deep Residual Learning for Image Recognition
             (https://arxiv.org/pdf/1512.03385v1.pdf).
             """
             downsample = nn.Sequential(
                 nn.Conv2d(
-                    self.in_channels, 
+                    self.in_channels,
                     out_channels*self.expansion,
                     kernel_size=1,
                     stride=stride,
-                    bias=False 
+                    bias=False
                 ),
                 nn.BatchNorm2d(out_channels * self.expansion),
             )
@@ -148,24 +144,10 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        # The spatial dimension of the final layer's feature 
-        # map should be (7, 7) for all ResNets.
+        # The spatial dimension of the final layer's feature
+        # map should be (7, 7) for all ResNets
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
         x = self.fc(x)
 
         return x
-
-if __name__ == '__main__':
-    tensor = torch.rand([1, 3, 224, 224])
-    model = ResNet(img_channels=3, num_layers=18, block=BasicBlock, num_classes=1000)
-    print(model)
-    
-    # Total parameters and trainable parameters.
-    total_params = sum(p.numel() for p in model.parameters())
-    print(f"{total_params:,} total parameters.")
-    total_trainable_params = sum(
-        p.numel() for p in model.parameters() if p.requires_grad)
-    print(f"{total_trainable_params:,} training parameters.")
-
-    output = model(tensor)
