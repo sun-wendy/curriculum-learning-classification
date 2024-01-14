@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 from torchvision import transforms, datasets
-
 import torch.optim as optim
 import numpy as np
 import random
