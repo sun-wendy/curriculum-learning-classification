@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-from torchvision import transforms, datasets
 import torch.optim as optim
 import numpy as np
 import random
@@ -8,7 +7,7 @@ import argparse
 
 import resnet18
 from train_setup import train, validate
-from utils import create_dataloader, save_plots
+from utils import create_baseline_dataloader, save_plots
 
 
 if __name__ == "__main__":
@@ -18,50 +17,11 @@ if __name__ == "__main__":
     parser.add_argument('--plot_name', type=str, help='plot name')
 
     args = parser.parse_args()
-
-    # data_transform = transforms.Compose([transforms.ToTensor(),
-    #                                      transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    #                                      transforms.Resize([400, 600])])
-    
-    # if args.dataset_type == 'foreground':
-    #     train_dataset = datasets.ImageFolder(root='./data/foreground/train',
-    #                                          transform=data_transform)
-    #     test_dataset = datasets.ImageFolder(root='./data/foreground/test',
-    #                                         transform=data_transform)
-    
-    # elif args.dataset_type == 'composite':
-    #     train_dataset = datasets.ImageFolder(root='./data/composite/train',
-    #                                          transform=data_transform)
-    #     test_dataset = datasets.ImageFolder(root='./data/composite/test',
-    #                                         transform=data_transform)
-    
-    # elif args.dataset_type == 'both':
-    #     foreground_train_dataset = datasets.ImageFolder(root='./data/foreground/train',
-    #                                                     transform=data_transform)
-    #     foreground_test_dataset = datasets.ImageFolder(root='./data/foreground/test',
-    #                                                    transform=data_transform)
-    #     composite_train_dataset = datasets.ImageFolder(root='./data/composite/train',
-    #                                                    transform=data_transform)
-    #     composite_test_dataset = datasets.ImageFolder(root='./data/composite/test',
-    #                                                   transform=data_transform)
-    #     assert foreground_train_dataset.classes == composite_train_dataset.classes
-    #     assert foreground_test_dataset.classes == composite_test_dataset.classes
-    #     train_dataset = torch.utils.data.ConcatDataset([foreground_train_dataset, composite_train_dataset])
-    #     train_dataset.classes = foreground_train_dataset.classes
-    #     test_dataset = torch.utils.data.ConcatDataset([foreground_test_dataset, composite_test_dataset])
-    #     test_dataset.classes = foreground_test_dataset.classes
-    
-    # train_loader = torch.utils.data.DataLoader(train_dataset,
-    #                                            batch_size=64,
-    #                                            shuffle=True)  # num_workers=1)
-    # test_loader = torch.utils.data.DataLoader(test_dataset,
-    #                                           batch_size=16,
-    #                                           shuffle=True)  # num_workers=1)
     
     if args.dataset_type not in ['foreground', 'composite', 'mix']:
         raise ValueError(f"Invalid dataset type for baseline model: {args.dataset_type}")
     
-    train_loader, test_loader = create_dataloader(args.dataset_type)
+    train_loader, test_loader = create_baseline_dataloader(args.dataset_type)
     print(train_loader.dataset.classes)
     print(test_loader.dataset.classes)
     
@@ -101,15 +61,8 @@ if __name__ == "__main__":
     # Start training
     for epoch in range(epochs):
         print(f"[INFO]: Epoch {epoch+1} of {epochs}")
-        train_epoch_loss, train_epoch_acc = train(model,
-                                                train_loader,
-                                                optimizer,
-                                                criterion,
-                                                device)
-        valid_epoch_loss, valid_epoch_acc = validate(model,
-                                                    test_loader,
-                                                    criterion,
-                                                    device)
+        train_epoch_loss, train_epoch_acc = train(model, train_loader, optimizer, criterion, device)
+        valid_epoch_loss, valid_epoch_acc = validate(model, test_loader, criterion, device)
         
         train_loss.append(train_epoch_loss)
         valid_loss.append(valid_epoch_loss)
