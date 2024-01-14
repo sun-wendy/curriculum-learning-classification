@@ -7,6 +7,30 @@ import fiftyone.zoo as foz
 from fiftyone import ViewField as F
 
 
+def extract_classwise_instances(samples, output_dir, label_field, ext=".png"):
+    print("Extracting object instances...")
+    for sample in samples.iter_samples(progress=True):
+        img = cv.imread(sample.filepath)
+        img_h, img_w, c = img.shape
+        for det in sample[label_field].detections:
+            mask = det.mask
+            [x, y, w, h] = det.bounding_box
+            x = int(x * img_w)
+            y = int(y * img_h)
+            h, w = mask.shape
+            mask_img = img[y:y+h, x:x+w, :]
+            alpha = mask.astype(np.uint8)*255
+            alpha = np.expand_dims(alpha, 2)
+            mask_img = np.concatenate((mask_img, alpha), axis=2)
+
+            label = det.label
+            label_dir = os.path.join(output_dir, label)
+            if not os.path.exists(label_dir):
+                os.mkdir(label_dir)
+            output_filepath = os.path.join(label_dir, det.id+ext)
+            cv.imwrite(output_filepath, mask_img)
+
+
 def save_composite(samples, output_dir, label_field, ext=".png"):
     print("Saving composite images...")
     for sample in samples.iter_samples(progress=True):
@@ -26,41 +50,44 @@ def save_composite(samples, output_dir, label_field, ext=".png"):
         cv.imwrite(output_filepath, img)
 
 
-label_field = "ground_truth"
-classes = ["horse", "airplane", 'toilet', 'train']
+if __name__ == "__main__":
+    label_field = "ground_truth"
+    classes = ["horse", "airplane", 'toilet', 'train']
 
-train_dataset = foz.load_zoo_dataset("coco-2017",
-                                     split="train",
-                                     label_types=["segmentations"],
-                                     classes=classes,
-                                     max_samples=10,
-                                     shuffle=True,
-                                     label_field=label_field)
-print(len(train_dataset))
+    train_dataset = foz.load_zoo_dataset("coco-2017",
+                                        split="train",
+                                        label_types=["segmentations"],
+                                        classes=classes,
+                                        max_samples=10,
+                                        shuffle=True,
+                                        label_field=label_field)
+    print(len(train_dataset))
 
-test_dataset = foz.load_zoo_dataset("coco-2017",
-                                    split="validation",
-                                    label_types=["segmentations"],
-                                    classes=classes,
-                                    max_samples=10,
-                                    shuffle=True,
-                                    label_field=label_field)
-print(len(test_dataset))
+    test_dataset = foz.load_zoo_dataset("coco-2017",
+                                        split="validation",
+                                        label_types=["segmentations"],
+                                        classes=classes,
+                                        max_samples=10,
+                                        shuffle=True,
+                                        label_field=label_field)
+    print(len(test_dataset))
 
-train_view = train_dataset.filter_labels(label_field, F("label").is_in(classes))
-print(train_view)
-test_view = test_dataset.filter_labels(label_field, F("label").is_in(classes))
-print(test_view)
+    train_view = train_dataset.filter_labels(label_field, F("label").is_in(classes))
+    print(train_view)
+    test_view = test_dataset.filter_labels(label_field, F("label").is_in(classes))
+    print(test_view)
 
-# foreground_train_output_dir = "/data/foreground/train"
-# foreground_test_output_dir = "/data/foreground/test"
-composite_train_output_dir = "./data/composite/train"
-composite_test_output_dir = "./data/composite/test"
+    foreground_train_output_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/foreground/train')
+    foreground_test_output_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/foreground/test')
+    composite_train_output_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/composite/train')
+    composite_test_output_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/composite/test')
 
-# os.makedirs(foreground_train_output_dir, exist_ok=True)
-# os.makedirs(foreground_test_output_dir, exist_ok=True)
-os.makedirs(composite_train_output_dir, exist_ok=True)
-os.makedirs(composite_test_output_dir, exist_ok=True)
+    os.makedirs(foreground_train_output_dir, exist_ok=True)
+    os.makedirs(foreground_test_output_dir, exist_ok=True)
+    os.makedirs(composite_train_output_dir, exist_ok=True)
+    os.makedirs(composite_test_output_dir, exist_ok=True)
 
-save_composite(train_view, composite_train_output_dir, label_field)
-save_composite(test_view, composite_test_output_dir, label_field)
+    extract_classwise_instances(train_view, foreground_train_output_dir, label_field)
+    extract_classwise_instances(test_view, foreground_test_output_dir, label_field)
+    save_composite(train_view, composite_train_output_dir, label_field)
+    save_composite(test_view, composite_test_output_dir, label_field)
