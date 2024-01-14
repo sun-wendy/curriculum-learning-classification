@@ -8,56 +8,60 @@ import argparse
 
 import resnet18
 from train_setup import train, validate
-import utils
+from utils import create_dataloader, save_plots
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--epochs', type=int, default=100, help='number of epochs')
+    parser.add_argument('--epochs', type=int, default=10, help='number of epochs')
     parser.add_argument('--dataset_type', type=str, default='foreground', help='dataset type')
     parser.add_argument('--plot_name', type=str, help='plot name')
 
     args = parser.parse_args()
 
-    data_transform = transforms.Compose([transforms.ToTensor(),
-                                         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-                                         transforms.Resize([400, 600])])
+    # data_transform = transforms.Compose([transforms.ToTensor(),
+    #                                      transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    #                                      transforms.Resize([400, 600])])
     
-    if args.dataset_type == 'foreground':
-        train_dataset = datasets.ImageFolder(root='./data/foreground/train',
-                                             transform=data_transform)
-        test_dataset = datasets.ImageFolder(root='./data/foreground/test',
-                                            transform=data_transform)
+    # if args.dataset_type == 'foreground':
+    #     train_dataset = datasets.ImageFolder(root='./data/foreground/train',
+    #                                          transform=data_transform)
+    #     test_dataset = datasets.ImageFolder(root='./data/foreground/test',
+    #                                         transform=data_transform)
     
-    elif args.dataset_type == 'composite':
-        train_dataset = datasets.ImageFolder(root='./data/composite/train',
-                                             transform=data_transform)
-        test_dataset = datasets.ImageFolder(root='./data/composite/test',
-                                            transform=data_transform)
+    # elif args.dataset_type == 'composite':
+    #     train_dataset = datasets.ImageFolder(root='./data/composite/train',
+    #                                          transform=data_transform)
+    #     test_dataset = datasets.ImageFolder(root='./data/composite/test',
+    #                                         transform=data_transform)
     
-    elif args.dataset_type == 'both':
-        foreground_train_dataset = datasets.ImageFolder(root='./data/foreground/train',
-                                                        transform=data_transform)
-        foreground_test_dataset = datasets.ImageFolder(root='./data/foreground/test',
-                                                       transform=data_transform)
-        composite_train_dataset = datasets.ImageFolder(root='./data/composite/train',
-                                                       transform=data_transform)
-        composite_test_dataset = datasets.ImageFolder(root='./data/composite/test',
-                                                      transform=data_transform)
-        assert foreground_train_dataset.classes == composite_train_dataset.classes
-        assert foreground_test_dataset.classes == composite_test_dataset.classes
-        train_dataset = torch.utils.data.ConcatDataset([foreground_train_dataset, composite_train_dataset])
-        train_dataset.classes = foreground_train_dataset.classes
-        test_dataset = torch.utils.data.ConcatDataset([foreground_test_dataset, composite_test_dataset])
-        test_dataset.classes = foreground_test_dataset.classes
+    # elif args.dataset_type == 'both':
+    #     foreground_train_dataset = datasets.ImageFolder(root='./data/foreground/train',
+    #                                                     transform=data_transform)
+    #     foreground_test_dataset = datasets.ImageFolder(root='./data/foreground/test',
+    #                                                    transform=data_transform)
+    #     composite_train_dataset = datasets.ImageFolder(root='./data/composite/train',
+    #                                                    transform=data_transform)
+    #     composite_test_dataset = datasets.ImageFolder(root='./data/composite/test',
+    #                                                   transform=data_transform)
+    #     assert foreground_train_dataset.classes == composite_train_dataset.classes
+    #     assert foreground_test_dataset.classes == composite_test_dataset.classes
+    #     train_dataset = torch.utils.data.ConcatDataset([foreground_train_dataset, composite_train_dataset])
+    #     train_dataset.classes = foreground_train_dataset.classes
+    #     test_dataset = torch.utils.data.ConcatDataset([foreground_test_dataset, composite_test_dataset])
+    #     test_dataset.classes = foreground_test_dataset.classes
     
-    train_loader = torch.utils.data.DataLoader(train_dataset,
-                                               batch_size=64,
-                                               shuffle=True)  # num_workers=1)
-    test_loader = torch.utils.data.DataLoader(test_dataset,
-                                              batch_size=16,
-                                              shuffle=True)  # num_workers=1)
+    # train_loader = torch.utils.data.DataLoader(train_dataset,
+    #                                            batch_size=64,
+    #                                            shuffle=True)  # num_workers=1)
+    # test_loader = torch.utils.data.DataLoader(test_dataset,
+    #                                           batch_size=16,
+    #                                           shuffle=True)  # num_workers=1)
     
+    if args.dataset_type not in ['foreground', 'composite', 'mix']:
+        raise ValueError(f"Invalid dataset type for baseline model: {args.dataset_type}")
+    
+    train_loader, test_loader = create_dataloader(args.dataset_type)
     print(train_loader.dataset.classes)
     print(test_loader.dataset.classes)
     
@@ -119,5 +123,5 @@ if __name__ == "__main__":
             break
 
     # Save the loss & accuracy plots
-    utils.save_plots(train_acc, valid_acc, train_loss, valid_loss, name=plot_name)
+    save_plots(train_acc, valid_acc, train_loss, valid_loss, name=plot_name)
     print('TRAINING COMPLETE')
