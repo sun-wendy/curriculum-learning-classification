@@ -12,7 +12,7 @@ from utils import create_baseline_dataloader, save_plots
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--epochs', type=int, default=10, help='number of epochs')
+    parser.add_argument('--epochs', type=int, default=100, help='number of epochs')
     parser.add_argument('--dataset_type', type=str, default='foreground', help='dataset type')
     parser.add_argument('--plot_name', type=str, help='plot name')
 

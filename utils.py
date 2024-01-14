@@ -90,7 +90,7 @@ def save_plots(train_acc, valid_acc, train_loss, valid_loss, name=None):
     plt.legend()
     if not os.path.exists('plots'):
         os.makedirs('plots')
-    plt.savefig(os.path.join('plots', name+'_accuracy.png'))
+    plt.savefig(os.path.join('plots', name+'_acc.png'))
 
     # Loss plots
     plt.figure(figsize=(10, 7))
