@@ -88,9 +88,9 @@ def save_plots(train_acc, valid_acc, train_loss, valid_loss, name=None):
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
-    if not os.path.exists('outputs'):
-        os.makedirs('outputs')
-    plt.savefig(os.path.join('outputs', name+'_accuracy.png'))
+    if not os.path.exists('plots'):
+        os.makedirs('plots')
+    plt.savefig(os.path.join('plots', name+'_accuracy.png'))
 
     # Loss plots
     plt.figure(figsize=(10, 7))
@@ -105,4 +105,4 @@ def save_plots(train_acc, valid_acc, train_loss, valid_loss, name=None):
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
-    plt.savefig(os.path.join('outputs', name+'_loss.png'))
+    plt.savefig(os.path.join('plots', name+'_loss.png'))

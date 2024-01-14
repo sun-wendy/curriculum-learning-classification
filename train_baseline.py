@@ -77,4 +77,5 @@ if __name__ == "__main__":
 
     # Save the loss & accuracy plots
     save_plots(train_acc, valid_acc, train_loss, valid_loss, name=plot_name)
+    torch.save(model.state_dict(), f'./checkpoints/{plot_name}.pt')
     print('TRAINING COMPLETE')
