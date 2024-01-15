@@ -7,8 +7,6 @@
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
 export DATASET_DIR=/mnt/xfs/home/wendysun/curriculum_learning
 
-source /mnt/xfs/home/wendysun/curriculum_learning/stats/bin/activate
-
 sleep 0.1
 
 echo "Building dataset..."
