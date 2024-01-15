@@ -58,7 +58,7 @@ if __name__ == "__main__":
                                         split="train",
                                         label_types=["segmentations"],
                                         classes=classes,
-                                        max_samples=10,
+                                        # max_samples=10,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(train_dataset))
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                                         split="validation",
                                         label_types=["segmentations"],
                                         classes=classes,
-                                        max_samples=10,
+                                        # max_samples=10,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(test_dataset))

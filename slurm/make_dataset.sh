@@ -2,10 +2,15 @@
 #SBATCH --job-name=make_dataset
 #SBATCH -o log/%j-make_dataset.log
 #SBATCH -c 10
-#SBATCH --gres=gpu:volta:1
+#SBATCH --gres=gpu:1
 
-export DATASET_DIR=/Users/wendysun/Desktop/curriculum-learning
+export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
+export DATASET_DIR=/mnt/xfs/home/wendysun/curriculum_learning
 
-source /Users/wendysun/Desktop/curriculum-learning/stats/bin/activate
+source /mnt/xfs/home/wendysun/curriculum_learning/stats/bin/activate
+
+sleep 0.1
+
+echo "Building dataset..."
 
 python preprocess_data.py
