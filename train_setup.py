@@ -8,7 +8,9 @@ def train(model, trainloader, optimizer, criterion, device):
     train_running_loss = 0.0
     train_running_correct = 0
     counter = 0
+    print(len(trainloader))
     for i, data in tqdm(enumerate(trainloader), total=len(trainloader)):
+        print('Inside for loop...')
         counter += 1
         image, labels = data
         image = image.to(device)
