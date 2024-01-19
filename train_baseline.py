@@ -23,7 +23,7 @@ if __name__ == "__main__":
     
     train_loader, test_loader = create_baseline_dataloader(args.dataset_type)
     print(train_loader.dataset.classes)
-    print(test_loader.dataset.classes)
+    print(test_loader.dataset.classes, "\n")
     
 
     # Set seed
@@ -39,6 +39,8 @@ if __name__ == "__main__":
     batch_size = 64
     learning_rate = 0.01
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    print("Available cuda count:", torch.cuda.device_count())
+    print("Device:", device, "\n")
 
     model = resnet18.ResNet(img_channels=3, num_layers=18, block=resnet18.BasicBlock, num_classes=4).to(device)
     plot_name = args.plot_name
@@ -47,7 +49,7 @@ if __name__ == "__main__":
     total_params = sum(p.numel() for p in model.parameters())
     print(f"{total_params:,} total parameters")
     total_trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    print(f"{total_trainable_params:,} training parameters")
+    print(f"{total_trainable_params:,} training parameters\n")
 
     # Optimizer
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)

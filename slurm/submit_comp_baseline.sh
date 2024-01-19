@@ -11,10 +11,10 @@ export USE_NNPACK=0
 
 sleep 0.1
 
-for dataset_type in 'foreground' 'composite' 'mix'
-do
-    python train_baseline.py \
-    --epochs 1 \
-    --dataset_type $dataset_type \
-    --plot_name baseline_$dataset_type
-done
+module load conda
+conda activate cl_env
+
+python train_baseline.py \
+--epochs 50 \
+--dataset_type 'composite' \
+--plot_name 'baseline_composite'

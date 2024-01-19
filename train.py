@@ -22,12 +22,12 @@ composite_test_dataset = datasets.ImageFolder(root='./data/composite/test',
 
 composite_train_loader = torch.utils.data.DataLoader(composite_train_dataset,
                                                      batch_size=64,
-                                                     shuffle=True)
-                                                     # num_workers=1)
+                                                     shuffle=True,
+                                                     num_workers=10)
 composite_test_loader = torch.utils.data.DataLoader(composite_test_dataset,
                                                     batch_size=16,
-                                                    shuffle=True)
-                                                    # num_workers=1)
+                                                    shuffle=True,
+                                                    num_workers=10)
 
 print(composite_train_loader.dataset.classes)
 print(composite_test_loader.dataset.classes)
