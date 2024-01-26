@@ -9,7 +9,6 @@ export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
 sleep 0.1
 
 module load conda
-conda init
 conda activate cl_env
 
 python test_gpu.py
