@@ -16,5 +16,5 @@ source activate cl_new
 
 python train.py \
 --epochs 300 \
---dataset_first 'composite' \
+--dataset_first 'foreground' \
 --plot_name 'cl_300'
