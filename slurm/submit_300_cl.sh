@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=train_baseline
-#SBATCH -o log/%j-train_baseline.log
+#SBATCH --job-name=train_cl_300
+#SBATCH -o log/%j-train_cl_300.log
 #SBATCH -c 10
 #SBATCH --gres=gpu:v100:1
 
