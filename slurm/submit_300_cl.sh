@@ -14,7 +14,7 @@ sleep 0.1
 module load conda
 source activate cl_new
 
-python train_baseline.py \
+python train.py \
 --epochs 300 \
 --dataset_first 'composite' \
 --plot_name 'cl_300'
