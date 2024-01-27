@@ -12,7 +12,7 @@ export USE_NNPACK=0
 sleep 0.1
 
 module load conda
-conda init
+conda init bash
 conda activate cl_new
 
 python train_baseline.py \
