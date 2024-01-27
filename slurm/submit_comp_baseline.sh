@@ -2,7 +2,7 @@
 #SBATCH --job-name=train_baseline
 #SBATCH -o log/%j-train_baseline.log
 #SBATCH -c 10
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:v100:1
 
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
 
@@ -12,7 +12,8 @@ export USE_NNPACK=0
 sleep 0.1
 
 module load conda
-conda activate cl_env
+conda init
+conda activate cl_new
 
 python train_baseline.py \
 --epochs 50 \
