@@ -7,7 +7,7 @@ import argparse
 
 import resnet18
 from train_setup import train, validate
-from utils import create_baseline_dataloader, save_plots
+from utils import create_baseline_dataloader, save_baseline_plots
 
 
 if __name__ == "__main__":
@@ -84,6 +84,6 @@ if __name__ == "__main__":
             converge_counter = 0
 
     # Save the loss & accuracy plots
-    save_plots(train_acc, valid_acc, train_loss, valid_loss, name=plot_name)
+    save_baseline_plots(train_acc, valid_acc, train_loss, valid_loss, name=plot_name)
     torch.save(model.state_dict(), f'./checkpoints/{plot_name}.pt')
     print('TRAINING COMPLETE')

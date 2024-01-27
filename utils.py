@@ -70,7 +70,7 @@ def create_cl_dataloader():
 
 plt.style.use('ggplot')
 
-def save_plots(train_acc, valid_acc, train_loss, valid_loss, name=None):
+def save_baseline_plots(train_acc, valid_acc, train_loss, valid_loss, name=None):
     """
     Function to save the loss and accuracy plots to disk.
     """
@@ -101,6 +101,52 @@ def save_plots(train_acc, valid_acc, train_loss, valid_loss, name=None):
     plt.plot(
         valid_loss, color='tab:red', linestyle='-',
         label='validataion loss'
+    )
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.savefig(os.path.join('plots', name+'_loss.png'))
+
+
+def save_cl_plots(train_acc, fore_valid_acc, fore_comp_acc, train_loss, fore_valid_loss, comp_valid_loss, name=None):
+    """
+    Function to save the loss and accuracy plots to disk.
+    """
+    # Accuracy plots
+    plt.figure(figsize=(10, 7))
+    plt.ylim(0, 105)
+    plt.plot(
+        train_acc, color='tab:blue', linestyle='-',
+        label='train accuracy'
+    )
+    plt.plot(
+        fore_valid_acc, color='tab:red', linestyle='-',
+        label='foreground validataion accuracy'
+    )
+    plt.plot(
+        comp_valid_acc, color='tab:green', linestyle='-',
+        label='composite validataion accuracy'
+    )
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    if not os.path.exists('plots'):
+        os.makedirs('plots')
+    plt.savefig(os.path.join('plots', name+'_acc.png'))
+
+    # Loss plots
+    plt.figure(figsize=(10, 7))
+    plt.plot(
+        train_loss, color='tab:blue', linestyle='-',
+        label='train loss'
+    )
+    plt.plot(
+        fore_valid_loss, color='tab:red', linestyle='-',
+        label='foreground validataion loss'
+    )
+    plt.plot(
+        comp_valid_loss, color='tab:red', linestyle='-',
+        label='composite validataion loss'
     )
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
