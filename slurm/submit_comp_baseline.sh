@@ -12,8 +12,7 @@ export USE_NNPACK=0
 sleep 0.1
 
 module load conda
-conda init bash
-conda activate cl_new
+source activate cl_new
 
 python train_baseline.py \
 --epochs 50 \
