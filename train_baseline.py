@@ -60,6 +60,8 @@ if __name__ == "__main__":
     train_loss, valid_loss = [], []
     train_acc, valid_acc = [], []
 
+    converge_counter = 0
+
     # Start training
     for epoch in range(epochs):
         print(f"[INFO]: Epoch {epoch+1} of {epochs}")
@@ -74,8 +76,12 @@ if __name__ == "__main__":
         print(f"Validation loss: {valid_epoch_loss:.3f}, validation acc: {valid_epoch_acc:.3f}")
         print('-'*50)
 
-        if train_epoch_acc == 100.0:
-            break
+        if train_epoch_acc >= 99.99:
+            converge_counter += 1
+            if converge_counter >= 3:
+                break
+        else:
+            converge_counter = 0
 
     # Save the loss & accuracy plots
     save_plots(train_acc, valid_acc, train_loss, valid_loss, name=plot_name)
