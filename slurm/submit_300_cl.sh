@@ -3,6 +3,7 @@
 #SBATCH -o log/%j-train_cl_300.log
 #SBATCH -c 10
 #SBATCH --gres=gpu:v100:1
+#SBATCH --time=36:00:00
 
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
 
