@@ -108,7 +108,7 @@ def save_baseline_plots(train_acc, valid_acc, train_loss, valid_loss, name=None)
     plt.savefig(os.path.join('plots', name+'_loss.png'))
 
 
-def save_cl_plots(train_acc, fore_valid_acc, fore_comp_acc, train_loss, fore_valid_loss, comp_valid_loss, name=None):
+def save_cl_plots(train_acc, fore_valid_acc, comp_valid_acc, train_loss, fore_valid_loss, comp_valid_loss, name=None):
     """
     Function to save the loss and accuracy plots to disk.
     """
