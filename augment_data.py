@@ -10,7 +10,7 @@ def parse_args():
         '--corruptions',
         type=str,
         nargs='+',
-        default='all',
+        default='benchmark',
         choices=[
             'all', 'benchmark', 'noise', 'blur', 'weather', 'digital',
             'holdout', 'None', 'gaussian_noise', 'shot_noise', 'impulse_noise',
