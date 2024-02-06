@@ -18,7 +18,7 @@ def create_augment_dataloader():
     return aug_loader
 
 
-def test_robustness(checkpoint_file, epochs=20):
+def test_robustness(checkpoint_file, epochs=5):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = ResNet(img_channels=3, num_layers=18, block=BasicBlock, num_classes=4).to(device)
     model.load_state_dict(torch.load(checkpoint_file, map_location=device))
