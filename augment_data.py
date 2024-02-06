@@ -78,6 +78,7 @@ def save_augmented(corruptions, severity):
                     )
                     if not os.path.exists(os.path.join(corrupted_data_folder, label)):
                         os.makedirs(os.path.join(corrupted_data_folder, label))
+                    img_name = img_name[:-4]
                     cv.imwrite(
                         os.path.join(corrupted_data_folder, label, f'{img_name}_{corruption}.png'),
                         corrupted_image
