@@ -8,6 +8,9 @@ export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
 
 sleep 0.1
 
+module load conda
+source activate cl_new
+
 echo "Augmenting dataset..."
 
 python augment_data.py

@@ -9,6 +9,9 @@ export DATASET_DIR=/mnt/xfs/home/wendysun/curriculum_learning
 
 sleep 0.1
 
+module load conda
+source activate cl_new
+
 echo "Building dataset..."
 
 python preprocess_data.py
