@@ -52,13 +52,11 @@ def save_composite(samples, output_dir, label_field, ext=".png"):
 
 if __name__ == "__main__":
     label_field = "ground_truth"
-    classes = ["horse", "airplane", 'toilet', 'train']
 
     train_dataset = foz.load_zoo_dataset("coco-2017",
                                         split="train",
                                         label_types=["segmentations"],
-                                        classes=classes,
-                                        max_samples=10,
+                                        # max_samples=50,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(train_dataset))
@@ -66,11 +64,16 @@ if __name__ == "__main__":
     test_dataset = foz.load_zoo_dataset("coco-2017",
                                         split="validation",
                                         label_types=["segmentations"],
-                                        classes=classes,
-                                        max_samples=10,
+                                        # max_samples=50,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(test_dataset))
+
+    # Set classes equal to a list of all the classes in the dataset
+    duplicate_classes = train_dataset.values("ground_truth.detections.label")
+    classes_set = set(class_name for sublist in duplicate_classes for class_name in sublist)
+    classes = list(classes_set)
+    print(classes)
 
     train_view = train_dataset.filter_labels(label_field, F("label").is_in(classes))
     print(train_view)
