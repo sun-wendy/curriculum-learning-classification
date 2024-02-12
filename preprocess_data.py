@@ -56,7 +56,7 @@ if __name__ == "__main__":
     train_dataset = foz.load_zoo_dataset("coco-2017",
                                         split="train",
                                         label_types=["segmentations"],
-                                        max_samples=50,
+                                        # max_samples=50,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(train_dataset))
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     test_dataset = foz.load_zoo_dataset("coco-2017",
                                         split="validation",
                                         label_types=["segmentations"],
-                                        max_samples=50,
+                                        # max_samples=50,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(test_dataset))
