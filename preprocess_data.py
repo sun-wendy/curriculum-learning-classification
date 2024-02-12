@@ -69,11 +69,8 @@ if __name__ == "__main__":
                                         label_field=label_field)
     print(len(test_dataset))
 
-    duplicate_classes = train_dataset.values("ground_truth.detections.label")
-    print("Duplicate classes: ", duplicate_classes)
-    classes_set = set(class_name for sublist in duplicate_classes for class_name in sublist)
-    classes = list(classes_set)
-    print(classes)
+    classes = train_dataset.distinct("ground_truth.detections.label")
+    print("Classes: ", classes)
 
     train_view = train_dataset.filter_labels(label_field, F("label").is_in(classes))
     print(train_view)
