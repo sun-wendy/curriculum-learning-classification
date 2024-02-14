@@ -30,6 +30,8 @@ def extract_classwise_instances(samples, output_dir, label_field, ext=".png"):
             output_filepath = os.path.join(label_dir, det.id+ext)
             if mask_img is not None and mask_img.size > 0:
                 cv.imwrite(output_filepath, mask_img)
+            else:
+                cv.imwrite(os.path.join(output_dir, '../../bad_images', det.id+ext), img)
 
 
 def save_composite(samples, output_dir, label_field, ext=".png"):
@@ -57,7 +59,7 @@ if __name__ == "__main__":
     train_dataset = foz.load_zoo_dataset("coco-2017",
                                         split="train",
                                         label_types=["segmentations"],
-                                        # max_samples=50,
+                                        max_samples=50,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(train_dataset))
@@ -65,7 +67,7 @@ if __name__ == "__main__":
     test_dataset = foz.load_zoo_dataset("coco-2017",
                                         split="validation",
                                         label_types=["segmentations"],
-                                        # max_samples=50,
+                                        max_samples=50,
                                         shuffle=True,
                                         label_field=label_field)
     print(len(test_dataset))
@@ -82,11 +84,13 @@ if __name__ == "__main__":
     foreground_test_output_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/foreground/test')
     composite_train_output_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/composite/train')
     composite_test_output_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/composite/test')
+    bad_images_dir = os.path.join(os.getenv('DATASET_DIR'), 'data/bad_images')
 
     os.makedirs(foreground_train_output_dir, exist_ok=True)
     os.makedirs(foreground_test_output_dir, exist_ok=True)
     os.makedirs(composite_train_output_dir, exist_ok=True)
     os.makedirs(composite_test_output_dir, exist_ok=True)
+    os.makedirs(bad_images_dir, exist_ok=True)
 
     extract_classwise_instances(train_view, foreground_train_output_dir, label_field)
     extract_classwise_instances(test_view, foreground_test_output_dir, label_field)
