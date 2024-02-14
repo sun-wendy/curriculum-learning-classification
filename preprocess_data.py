@@ -28,7 +28,7 @@ def extract_classwise_instances(samples, output_dir, label_field, ext=".png"):
             if not os.path.exists(label_dir):
                 os.mkdir(label_dir)
             output_filepath = os.path.join(label_dir, det.id+ext)
-            if mask_img is not None:
+            if mask_img is not None and mask_img.size > 0:
                 cv.imwrite(output_filepath, mask_img)
 
 
