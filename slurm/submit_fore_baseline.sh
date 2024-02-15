@@ -20,7 +20,7 @@ for i in "${LAYERS[@]}"
 do
     python train_baseline.py \
     --num_layers $i \
-    --epochs 100 \
+    --epochs 200 \
     --dataset_type 'foreground' \
     --plot_name $i'_baseline_foreground'
 done
