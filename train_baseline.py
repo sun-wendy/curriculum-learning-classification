@@ -5,25 +5,35 @@ import numpy as np
 import random
 import argparse
 
-import resnet18
+import resnet
 from train_setup import train, validate
 from utils import create_baseline_dataloader, save_baseline_plots
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--num_layers', type=int, default=18, help='number of ResNet layers')
     parser.add_argument('--epochs', type=int, default=100, help='number of epochs')
     parser.add_argument('--dataset_type', type=str, default='foreground', help='dataset type')
     parser.add_argument('--plot_name', type=str, help='plot name')
 
     args = parser.parse_args()
     
+    if args.num_layers in [18, 24]:
+        res_block = resnet.BasicBlock
+    elif args.num_layers == 50:
+        res_block = resnet.BottleneckBlock
+    else:
+        raise ValueError(f"Invalid number of ResNet layers: {args.num_layers}")
+    
     if args.dataset_type not in ['foreground', 'composite', 'mix']:
         raise ValueError(f"Invalid dataset type for baseline model: {args.dataset_type}")
     
     train_loader, test_loader = create_baseline_dataloader(args.dataset_type)
     print(train_loader.dataset.classes)
-    print(test_loader.dataset.classes, "\n")
+    print(test_loader.dataset.classes)
+    num_classes = len(train_loader.dataset.classes)
+    print("# of classes:", num_classes, "\n")
     
 
     # Set seed
@@ -42,7 +52,7 @@ if __name__ == "__main__":
     print("Available cuda count:", torch.cuda.device_count())
     print("Device:", device, "\n")
 
-    model = resnet18.ResNet(img_channels=3, num_layers=18, block=resnet18.BasicBlock, num_classes=4).to(device)
+    model = resnet.ResNet(img_channels=3, num_layers=args.num_layers, block=res_block, num_classes=num_classes).to(device)
     plot_name = args.plot_name
 
     # Total parameters & trainable parameters

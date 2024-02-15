@@ -11,10 +11,9 @@ export USE_NNPACK=0
 
 sleep 0.1
 
-module load conda
-source activate cl_new
 
 python train_baseline.py \
+--num_layers 50 \
 --epochs 50 \
 --dataset_type 'foreground' \
 --plot_name 'baseline_foreground'
