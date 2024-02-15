@@ -14,8 +14,13 @@ sleep 0.1
 module load conda
 source activate cl_new
 
-python train_baseline.py \
---num_layers 50 \
---epochs 50 \
---dataset_type 'foreground' \
---plot_name '50_baseline_foreground'
+LAYERS = (18 34 50)
+
+for i in "${LAYERS[@]}"
+do
+    python train_baseline.py \
+    --num_layers $i \
+    --epochs 100 \
+    --dataset_type 'foreground' \
+    --plot_name $i'_baseline_foreground'
+done

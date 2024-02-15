@@ -25,6 +25,7 @@ if __name__ == "__main__":
         res_block = resnet.BottleneckBlock
     else:
         raise ValueError(f"Invalid number of ResNet layers: {args.num_layers}")
+    print("# of layers:", args.num_layers, "\n")
     
     if args.dataset_type not in ['foreground', 'composite', 'mix']:
         raise ValueError(f"Invalid dataset type for baseline model: {args.dataset_type}")
