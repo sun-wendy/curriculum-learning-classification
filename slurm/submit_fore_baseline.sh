@@ -14,7 +14,7 @@ sleep 0.1
 module load conda
 source activate cl_new
 
-LAYERS=(18 34 50)
+LAYERS=(18)
 
 for i in "${LAYERS[@]}"
 do
