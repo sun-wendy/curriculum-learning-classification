@@ -53,7 +53,9 @@ if __name__ == "__main__":
     print("Available cuda count:", torch.cuda.device_count())
     print("Device:", device, "\n")
 
-    model = resnet.ResNet(img_channels=3, num_layers=args.num_layers, block=res_block, num_classes=num_classes).to(device)
+    model = resnet.ResNet(img_channels=3, num_layers=args.num_layers, block=res_block, num_classes=num_classes)
+    model = nn.DataParallel(model, device_ids=[0, 1])
+    model.to(device)
     plot_name = args.plot_name
 
     # Total parameters & trainable parameters
