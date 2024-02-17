@@ -7,10 +7,8 @@ def train(model, trainloader, optimizer, criterion, device):
     print('Training...')
     train_running_loss = 0.0
     train_running_correct = 0
-    counter = 0
 
     for i, data in tqdm(enumerate(trainloader), total=len(trainloader)):
-        counter += 1
         image, labels = data
         image = image.to(device)
         labels = labels.to(device)
@@ -29,8 +27,7 @@ def train(model, trainloader, optimizer, criterion, device):
         optimizer.step()
 
     # Loss & accuracy for the complete epoch
-    epoch_loss = train_running_loss / counter
-    # epoch_acc = 100. * (train_running_correct / len(trainloader.dataset))
+    epoch_loss = train_running_loss / len(trainloader.dataset)
     epoch_acc = 100. * (train_running_correct / len(trainloader.dataset))
     return epoch_loss, epoch_acc
 
@@ -40,12 +37,9 @@ def validate(model, testloader, criterion, device):
     print('Validation...')
     valid_running_loss = 0.0
     valid_running_correct = 0
-    counter = 0
 
     with torch.no_grad():
         for i, data in tqdm(enumerate(testloader), total=len(testloader)):
-            counter += 1
-
             image, labels = data
             image = image.to(device)
             labels = labels.to(device)
@@ -59,6 +53,6 @@ def validate(model, testloader, criterion, device):
             valid_running_correct += (preds == labels).sum().item()
 
     # Loss & accuracy for the complete epoch
-    epoch_loss = valid_running_loss / counter
+    epoch_loss = valid_running_loss / len(testloader.dataset)
     epoch_acc = 100. * (valid_running_correct / len(testloader.dataset))
     return epoch_loss, epoch_acc
