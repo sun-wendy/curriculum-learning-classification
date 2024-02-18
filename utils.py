@@ -25,18 +25,18 @@ def create_baseline_dataloader(dataset_type):
     assert foreground_test_dataset.classes == composite_test_dataset.classes
 
     if dataset_type == 'foreground':
-        train_loader = DataLoader(foreground_train_dataset, batch_size=64, num_workers=8, shuffle=True, pin_memory=True)
-        test_loader = DataLoader(foreground_test_dataset, batch_size=16, num_workers=8, shuffle=True, pin_memory=True)
+        train_loader = DataLoader(foreground_train_dataset, batch_size=64, num_workers=16, shuffle=True, pin_memory=True)
+        test_loader = DataLoader(foreground_test_dataset, batch_size=16, num_workers=16, shuffle=True, pin_memory=True)
     elif dataset_type == 'composite':
-        train_loader = DataLoader(composite_train_dataset, batch_size=64, num_workers=8, shuffle=True, pin_memory=True)
-        test_loader = DataLoader(composite_test_dataset, batch_size=16, num_workers=8, shuffle=True, pin_memory=True)
+        train_loader = DataLoader(composite_train_dataset, batch_size=64, num_workers=16, shuffle=True, pin_memory=True)
+        test_loader = DataLoader(composite_test_dataset, batch_size=16, num_workers=16, shuffle=True, pin_memory=True)
     elif dataset_type == 'mix':
         train_dataset = torch.utils.data.ConcatDataset([foreground_train_dataset, composite_train_dataset])
         train_dataset.classes = foreground_train_dataset.classes
         test_dataset = torch.utils.data.ConcatDataset([foreground_test_dataset, composite_test_dataset])
         test_dataset.classes = foreground_test_dataset.classes
-        train_loader = DataLoader(train_dataset, batch_size=64, num_workers=8, shuffle=True, pin_memory=True)
-        test_loader = DataLoader(test_dataset, batch_size=16, num_workers=8, shuffle=True, pin_memory=True)
+        train_loader = DataLoader(train_dataset, batch_size=64, num_workers=16, shuffle=True, pin_memory=True)
+        test_loader = DataLoader(test_dataset, batch_size=16, num_workers=16, shuffle=True, pin_memory=True)
     else:
         raise ValueError(f"Invalid dataset type for baseline model: {dataset_type}")
     
@@ -60,10 +60,10 @@ def create_cl_dataloader():
     assert foreground_train_dataset.classes == composite_train_dataset.classes
     assert foreground_test_dataset.classes == composite_test_dataset.classes
 
-    foreground_train_loader = DataLoader(foreground_train_dataset, batch_size=64, num_workers=8, shuffle=True, pin_memory=True)
-    foreground_test_loader = DataLoader(foreground_test_dataset, batch_size=16, num_workers=8, shuffle=True, pin_memory=True)
-    composite_train_loader = DataLoader(composite_train_dataset, batch_size=64, num_workers=8, shuffle=True, pin_memory=True)
-    composite_test_loader = DataLoader(composite_test_dataset, batch_size=16, num_workers=8, shuffle=True, pin_memory=True)
+    foreground_train_loader = DataLoader(foreground_train_dataset, batch_size=64, num_workers=16, shuffle=True, pin_memory=True)
+    foreground_test_loader = DataLoader(foreground_test_dataset, batch_size=16, num_workers=16, shuffle=True, pin_memory=True)
+    composite_train_loader = DataLoader(composite_train_dataset, batch_size=64, num_workers=16, shuffle=True, pin_memory=True)
+    composite_test_loader = DataLoader(composite_test_dataset, batch_size=16, num_workers=16, shuffle=True, pin_memory=True)
 
     return foreground_train_loader, foreground_test_loader, composite_train_loader, composite_test_loader
 

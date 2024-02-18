@@ -2,7 +2,7 @@
 #SBATCH --job-name=train_baseline
 #SBATCH -o log/%j-train_baseline.log
 #SBATCH -c 10
-#SBATCH --gres=gpu:v100:8
+#SBATCH --gres=gpu:v100:6
 #SBATCH --time=48:00:00
 
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
