@@ -19,4 +19,4 @@ python train_baseline.py \
 --num_layers 18 \
 --epochs 200 \
 --dataset_type 'foreground' \
---plot_name $i'_baseline_foreground'
+--plot_name '18_baseline_foreground'
