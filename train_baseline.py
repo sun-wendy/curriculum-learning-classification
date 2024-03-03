@@ -74,6 +74,7 @@ if __name__ == "__main__":
     train_acc, valid_acc = [], []
 
     converge_counter = 0
+    last_epoch_train_acc = 0
 
     # Start training
     for epoch in range(epochs):
@@ -81,6 +82,7 @@ if __name__ == "__main__":
         train_epoch_loss, train_epoch_acc = train(model, train_loader, optimizer, criterion, device)
         valid_epoch_loss, valid_epoch_acc = validate(model, test_loader, criterion, device)
         
+        last_epoch_train_acc = train_epoch_acc
         train_loss.append(train_epoch_loss)
         valid_loss.append(valid_epoch_loss)
         train_acc.append(train_epoch_acc)
@@ -89,12 +91,14 @@ if __name__ == "__main__":
         print(f"Validation loss: {valid_epoch_loss:.3f}, validation acc: {valid_epoch_acc:.3f}")
         print('-'*50)
 
-        if train_epoch_acc >= 99.99:
+        if abs(train_epoch_acc - valid_epoch_acc) <= 0.015:
             converge_counter += 1
-            if converge_counter >= 3:
+            if converge_counter >= 5:
+                print(f"Early stopping at epoch {epoch+1}")
                 break
         else:
             converge_counter = 0
+
 
     # Save the loss & accuracy plots
     save_baseline_plots(train_acc, valid_acc, train_loss, valid_loss, name=plot_name)
