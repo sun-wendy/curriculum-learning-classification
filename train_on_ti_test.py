@@ -90,7 +90,7 @@ if __name__ == "__main__":
         print(f"Validation loss: {valid_epoch_loss:.3f}, validation acc: {valid_epoch_acc:.3f}")
         print('-'*50)
 
-        if abs(train_epoch_acc - last_epoch_train_acc) <= 0.015:
+        if abs(train_epoch_acc - last_epoch_train_acc) <= 0.05:
             converge_counter += 1
             if converge_counter >= 5:
                 print(f"Training converged at epoch {epoch+1}")
