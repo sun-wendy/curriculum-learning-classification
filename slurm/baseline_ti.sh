@@ -2,7 +2,7 @@
 #SBATCH --job-name=baseline_ti
 #SBATCH -o log/%j-baseline_ti.log
 #SBATCH -c 24
-#SBATCH --gres=gpu:6
+#SBATCH --gres=gpu:2080_ti:6
 #SBATCH --time=200:00:00
 
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
