@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=ti_test
-#SBATCH -o log/%j-ti_test.log
-#SBATCH -c 32
-#SBATCH --gres=gpu:4
+#SBATCH --job-name=baseline_ti
+#SBATCH -o log/%j-baseline_ti.log
+#SBATCH -c 24
+#SBATCH --gres=gpu:6
 #SBATCH --time=200:00:00
 
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
@@ -18,5 +18,5 @@ source activate cl_new
 python train_on_ti_test.py \
 --num_layers 18 \
 --epochs 200 \
---dataset_type 'foreground' \
---plot_name '18_baseline_foreground'
+--dataset_type 'composite' \
+--plot_name '18_baseline_composite'
