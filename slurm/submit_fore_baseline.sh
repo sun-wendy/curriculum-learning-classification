@@ -18,5 +18,5 @@ source activate cl_new
 python train_baseline.py \
 --num_layers 18 \
 --epochs 200 \
---dataset_type 'foreground' \
---plot_name '18_baseline_foreground'
+--dataset_type 'mix' \
+--plot_name '18_baseline_mix'
