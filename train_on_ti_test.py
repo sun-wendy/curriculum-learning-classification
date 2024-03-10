@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    if args.num_layers in [18, 24]:
+    if args.num_layers in [18, 34]:
         res_block = resnet.BasicBlock
     elif args.num_layers == 50:
         res_block = resnet.BottleneckBlock

@@ -16,7 +16,7 @@ module load conda
 source activate cl_new
 
 python train_baseline.py \
---num_layers 18 \
+--num_layers 34 \
 --epochs 200 \
---dataset_type 'mix' \
---plot_name '18_baseline_mix'
+--dataset_type 'composite' \
+--plot_name '34_baseline_composite'
