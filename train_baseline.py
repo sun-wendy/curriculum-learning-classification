@@ -54,7 +54,7 @@ if __name__ == "__main__":
     print("Device:", device, "\n")
 
     model = resnet.ResNet(img_channels=3, num_layers=args.num_layers, block=res_block, num_classes=num_classes)
-    model = nn.DataParallel(model, device_ids=[0, 1, 2, 3])
+    model = nn.DataParallel(model, device_ids=[0, 1, 2, 3, 4, 5, 6, 7])
     model.to(device)
     plot_name = args.plot_name
 
