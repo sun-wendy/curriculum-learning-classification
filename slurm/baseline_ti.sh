@@ -18,5 +18,5 @@ source activate cl_new
 python train_on_ti_test.py \
 --num_layers 50 \
 --epochs 200 \
---dataset_type 'composite' \
---plot_name '50_baseline_composite'
+--dataset_type 'mix' \
+--plot_name '50_baseline_mix'
