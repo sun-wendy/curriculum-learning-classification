@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=train_cl_300
-#SBATCH -o log/%j-train_cl_300.log
-#SBATCH -c 10
-#SBATCH --gres=gpu:v100:1
+#SBATCH --job-name=train_cl_600
+#SBATCH -o log/%j-train_cl_600.log
+#SBATCH -c 32
+#SBATCH --gres=gpu:v100:8
 #SBATCH --time=36:00:00
 
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
@@ -16,6 +16,7 @@ module load conda
 source activate cl_new
 
 python train.py \
---epochs 300 \
+--num_layers 50 \
+--epochs 600 \
 --dataset_first 'foreground' \
---plot_name 'cl_300'
+--plot_name 'cl_600'
