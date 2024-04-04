@@ -27,8 +27,8 @@ if __name__ == "__main__":
         raise ValueError(f"Invalid number of ResNet layers: {args.num_layers}")
     print("# of layers:", args.num_layers, "\n")
     
-    if args.dataset_type not in ['foreground', 'composite', 'mix']:
-        raise ValueError(f"Invalid dataset type for baseline model: {args.dataset_type}")
+    if args.dataset_first not in ['foreground', 'composite']:
+        raise ValueError(f"Invalid dataset type for CL model: {args.dataset_type}")
     
     fore_train_loader, fore_test_loader, comp_train_loader, comp_test_loader = create_cl_dataloader()
     print(fore_train_loader.dataset.classes)
