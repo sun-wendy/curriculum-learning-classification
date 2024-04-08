@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=train_cl_600
 #SBATCH -o log/%j-train_cl_600.log
-#SBATCH -c 32
-#SBATCH --gres=gpu:v100:8
-#SBATCH --time=36:00:00
+#SBATCH -c 28
+#SBATCH --gres=gpu:v100:7
+#SBATCH --time=500:00:00
 
 export PATH=/mnt/xfs/home/wendysun/curriculum_learning:$PATH
 
