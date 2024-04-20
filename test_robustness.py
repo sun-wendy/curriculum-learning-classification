@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
@@ -23,6 +24,7 @@ def test_robustness(checkpoint_file, epochs=5):
     aug_loader = create_augment_dataloader()
     num_classes = len(aug_loader.dataset.classes)
     model = resnet.ResNet(img_channels=3, num_layers=34, block=resnet.BasicBlock, num_classes=num_classes)
+    model = nn.DataParallel(model, device_ids=[0])
     model.to(device)
     model.load_state_dict(torch.load(checkpoint_file, map_location=device))
     model.eval()
