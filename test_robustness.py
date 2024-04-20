@@ -23,6 +23,7 @@ def test_robustness(checkpoint_file, epochs=5):
     aug_loader = create_augment_dataloader()
     num_classes = len(aug_loader.dataset.classes)
     model = resnet.ResNet(img_channels=3, num_layers=34, block=resnet.BasicBlock, num_classes=num_classes)
+    model.to(device)
     model.load_state_dict(torch.load(checkpoint_file, map_location=device))
     model.eval()
     criterion = torch.nn.CrossEntropyLoss()
@@ -45,6 +46,7 @@ def compare_robustness():
     for checkpoint in os.listdir('./checkpoints'):
         # If the file starts with "cl_600_34", then run the lines
         if checkpoint.startswith('cl_600_34') or checkpoint.startswith('34_baseline'):
+            print(checkpoint)
             loss_avg, acc_avg = test_robustness(os.path.join('./checkpoints', checkpoint))
             losses.append(loss_avg)
             accs.append(acc_avg)
