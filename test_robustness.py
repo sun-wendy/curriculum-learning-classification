@@ -4,7 +4,7 @@ from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
 import os
 
-from resnet18 import BasicBlock, ResNet
+import resnet
 from train_setup import validate
 
 
@@ -20,10 +20,11 @@ def create_augment_dataloader():
 
 def test_robustness(checkpoint_file, epochs=5):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = ResNet(img_channels=3, num_layers=18, block=BasicBlock, num_classes=4).to(device)
+    aug_loader = create_augment_dataloader()
+    num_classes = len(aug_loader.dataset.classes)
+    model = resnet.ResNet(img_channels=3, num_layers=34, block=resnet.BasicBlock, num_classes=num_classes)
     model.load_state_dict(torch.load(checkpoint_file, map_location=device))
     model.eval()
-    aug_loader = create_augment_dataloader()
     criterion = torch.nn.CrossEntropyLoss()
     loss_list, acc_list = [], []
     
@@ -42,11 +43,13 @@ def compare_robustness():
     losses, accs = [], []
     x_labels, bar_colors = [], []
     for checkpoint in os.listdir('./checkpoints'):
-        loss_avg, acc_avg = test_robustness(os.path.join('./checkpoints', checkpoint))
-        losses.append(loss_avg)
-        accs.append(acc_avg)
-        x_labels.append(checkpoint[:-3])
-        bar_colors.append('tab:red') if 'baseline' in checkpoint else bar_colors.append('tab:blue')
+        # If the file starts with "cl_600_34", then run the lines
+        if checkpoint.startswith('cl_600_34') or checkpoint.startswith('34_baseline'):
+            loss_avg, acc_avg = test_robustness(os.path.join('./checkpoints', checkpoint))
+            losses.append(loss_avg)
+            accs.append(acc_avg)
+            x_labels.append(checkpoint[:-3])
+            bar_colors.append('tab:red') if 'baseline' in checkpoint else bar_colors.append('tab:blue')
     
     # Bar plot for losses
     _, ax_loss = plt.subplots()

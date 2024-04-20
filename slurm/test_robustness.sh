@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=test_robustness
-#SBATCH -o log/%j-test_robustness.log
+#SBATCH -o log/%j-test_robustness_34.log
 #SBATCH -c 10
 #SBATCH --gres=gpu:v100:1
 
