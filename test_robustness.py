@@ -19,7 +19,7 @@ def create_augment_dataloader():
     return aug_loader
 
 
-def test_robustness(checkpoint_file, epochs=5):
+def test_robustness(checkpoint_file, epochs=1):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     aug_loader = create_augment_dataloader()
     num_classes = len(aug_loader.dataset.classes)
@@ -62,7 +62,7 @@ def compare_robustness():
     ax_loss.set_ylabel('Loss')
     plt.setp(ax_loss.get_xticklabels(), rotation=45, ha='right')
     ax_loss.set_title('Loss Comparison')
-    plt.savefig(os.path.join('plots', 'loss_comparison.png'))
+    plt.savefig(os.path.join('plots', '34_loss_comparison.png'))
 
     # Bar plot for accuracies
     _, ax_acc = plt.subplots()
@@ -71,7 +71,7 @@ def compare_robustness():
     ax_acc.set_ylabel('Accuracy')
     plt.setp(ax_acc.get_xticklabels(), rotation=45, ha='right')
     ax_acc.set_title('Accuracy Comparison')
-    plt.savefig(os.path.join('plots', 'acc_comparison.png'))
+    plt.savefig(os.path.join('plots', '34_acc_comparison.png'))
 
 
 if __name__ == '__main__':
