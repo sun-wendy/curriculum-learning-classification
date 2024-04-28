@@ -19,4 +19,4 @@ python train.py \
 --num_layers 34 \
 --epochs 600 \
 --dataset_first 'composite' \
---plot_name 'cl_600_34'
+--plot_name 'cl_600_34_composite'
